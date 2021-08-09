@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title></title>
+
+    <style>
+        table {
+            width: 100%;
+            background: white;
+            color: black;
+            border-spacing: 1px;
+        }
+        td, th {
+            background: whitesmoke; /* Цвет фона ячеек */
+            padding: 5px; /* Поля вокруг текста */
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+<table border="2">
+
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Role</th>
+    </tr>
+
+    <tr>
+        <td><span><a th:href="@{/admin/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a></span></td>
+        <td><span th:text="${user.getName()}"></span></td>
+        <td><span th:text="${user.getAge()}"></span></td>
+        <td><span th:text="${user.getRoles()}"></span></td>
+    </tr>
+    <br/>
+    <hr/>
+    <a th:href="@{/admin/{id}/edit(id=${user.getId()})}">Edit</a>
+    <br/>
+    <hr/>
+    <form th:method="DELETE" th:action="@{/admin/{id}(id=${user.getId()})}">
+        <input type="submit" value="Delete"/>
+    </form>
+    <br/>
+    <hr/>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Log out" />
+    </form>
+</table>
+
+</body>
+</html>

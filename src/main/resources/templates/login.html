@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+
+    <style type="text/css">
+
+        input {
+            padding: 10px;
+            border: 0;
+            width: 50%;
+            margin: 10px 0;
+            box-shadow: 0 0 25px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        #centerLayer {
+            width: 400px; /* Ширина слоя в пикселах */
+            margin: 0 auto; /* Отступ слева и справа */
+            padding: 10px; /* Поля вокруг текста */
+            text-align: left; /* Выравнивание содержимого слоя по левому краю */
+        }
+
+    </style>
+
+</head>
+<body>
+<div id="centerLayer">
+    <form method="post" action="/login">
+        <input name="j_username"/>
+        <input name="j_password"/>
+        <input type="submit"/>
+    </form>
+</div>
+</body>
+</html>
