@@ -18,6 +18,12 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String name;
 
+    @Column(name = "lastname")
+    private String lastName;
+
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "password")
     private String pass;
 
@@ -33,13 +39,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, int age) {
+    public User(String name, String lastName, String email, String pass, int age) {
         this.name = name;
-        this.age = age;
-    }
-
-    public User(String name, String pass, int age) {
-        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
         this.pass = pass;
         this.age = age;
     }
@@ -56,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getName();
+        return getEmail();
     }
 
     @Override
@@ -95,10 +98,6 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public void setPassword(String password) {
-        this.pass = password;
-    }
-
     public int getAge() {
         return age;
     }
@@ -117,6 +116,26 @@ public class User implements UserDetails {
 
     public String getPass() {
         return pass;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     @Override

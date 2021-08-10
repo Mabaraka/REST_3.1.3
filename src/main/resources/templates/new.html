@@ -7,14 +7,20 @@
 <body>
 
 <form th:method="POST" th:action="@{/admin}" th:object="${user}">
-    <label for="name">Enter name: </label>
+    <label for="name">Enter first name: </label>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>
-    <label for="password">Enter password: </label>
-    <input type="password" th:field="*{password}" id="password"/>
+    <label for="lastName">Enter last name: </label>
+    <input type="text" th:field="*{lastName}" id="lastName"/>
+    <br/>
+    <label for="pass">Enter password: </label>
+    <input type="password" th:field="*{pass}" id="pass"/>
     <br/>
     <label for="age">Enter age: </label>
     <input type="number" th:field="*{age}" id="age"/>
+    <br/>
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
     <br/>
     <br>
     <input th:type="checkbox" th:id="1" th:name="ADMIN" th:value="ADMIN">

@@ -34,11 +34,11 @@ public class DataInitializer {
             roleService.save(role);
         }
 
-        User admin = new User("Bob","pass",21);
+        User admin = new User("Bob","Miller","bob@gmail.com","pass",21);
         admin.setRoles(allRoles);
         userService.save(admin);
 
-        User user = new User("Rik","pass",20);
+        User user = new User("Rik","Stone","rik@gmail.com","pass",20);
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(roleService.getRoleById(2L));
         user.setRoles(userRoles);

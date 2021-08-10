@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPass(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
     }
 
@@ -50,10 +50,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void update(Long id, User user) {
         User updateUser = userDao.findById(id).get();
-        updateUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        updateUser.setPass(passwordEncoder.encode(user.getPass()));
         updateUser.setAge(user.getAge());
         updateUser.setName(user.getName());
         updateUser.setRoles(user.getRoles());
+        updateUser.setEmail(user.getEmail());
+        updateUser.setLastName(user.getLastName());
     }
 
     @Override
@@ -64,16 +66,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User findByUsername(String username) {
-       return userDao.findByName(username).get();
+    public User findByEmail(String email) {
+       return userDao.findByEmail(email).get();
     }
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = findByEmail(email);
         if (user == null){
-            throw new UsernameNotFoundException(String.format("User '%s' not found", username));
+            throw new UsernameNotFoundException(String.format("User '%s' not found", email));
         }
         return user;
     }
