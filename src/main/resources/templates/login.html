@@ -1,37 +1,73 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
+
+
+
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
 
-    <style type="text/css">
-
-        input {
-            padding: 10px;
-            border: 0;
-            width: 50%;
-            margin: 10px 0;
-            box-shadow: 0 0 25px 4px rgba(0, 0, 0, 0.06);
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login page</title>
+    <style>
+        body {
+            height: 100%;
         }
 
-        #centerLayer {
-            width: 400px; /* Ширина слоя в пикселах */
-            margin: 0 auto; /* Отступ слева и справа */
-            padding: 10px; /* Поля вокруг текста */
-            text-align: left; /* Выравнивание содержимого слоя по левому краю */
+        body {
+            display: flex;
+            align-items: baseline;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
         }
 
+        .login {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .login .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .login input[type="username"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
+
+
+
 <body>
-<div id="centerLayer">
-    <form method="post" action="/login">
-        <input name="j_username"/>
-        <input name="j_password"/>
-        <input type="submit"/>
+
+<div class="container">
+
     </form>
+
+    <main class="login">
+        <form method="post" action="/login">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <div class="form-floating">
+                <input  name="j_username" type="username" class="form-control" id="username" placeholder="Username" >
+            </div>
+            <div class="form-floating">
+                <input name="j_password" type="password" class="form-control" id="Password" placeholder="Password" >
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        </form>
+    </main>
+
+
 </div>
+
+
 </body>
 </html>

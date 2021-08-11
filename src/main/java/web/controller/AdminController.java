@@ -1,15 +1,21 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.models.Role;
 import web.models.User;
 import web.service.RoleService;
 import web.service.UserService;
 
+import javax.naming.Binding;
+import java.security.Principal;
 import java.util.HashSet;
+import java.util.Set;
 
 
 @Controller
@@ -17,9 +23,7 @@ import java.util.HashSet;
 public class AdminController {
 
     private UserService userService;
-
     private RoleService roleService;
-
 
     @Autowired
     public AdminController(UserService userService, RoleService roleService) {
@@ -28,7 +32,8 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(Model model, Principal principal) {
+        model.addAttribute("loggedUser", userService.findByEmail(principal.getName()));
         model.addAttribute("Users", userService.index());
         return "index";
     }
@@ -40,16 +45,20 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String newUser(@ModelAttribute("user") User user, Model model, Principal principal) {
+        model.addAttribute("loggedUser", userService.findByEmail(principal.getName()));
         return "new";
     }
 
-    @PostMapping
+    @PostMapping("/createUser")
     public String create(@ModelAttribute("user") User user,
                          @RequestParam(required = false, name = "ADMIN") String ADMIN,
-                         @RequestParam(required = false, name = "USER") String USER) {
+                         @RequestParam(required = false, name = "USER") String USER,
+                         Principal principal, Model model) {
 
-        HashSet<Role> roles = new HashSet();
+        model.addAttribute("loggedUser", userService.findByEmail(principal.getName()));
+
+        Set<Role> roles = new HashSet<>();
 
         if (ADMIN != null) {
             roles.add(roleService.getRoleById(1L));
@@ -63,21 +72,15 @@ public class AdminController {
         user.setRoles(roles);
 
         userService.save(user);
+
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userService.show(id));
-        return "edit";
-    }
-
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public String update(@ModelAttribute("user") User user,
                          @PathVariable("id") Long id,
                          @RequestParam(required = false, name = "ADMIN") String ADMIN,
                          @RequestParam(required = false, name = "USER") String USER) {
-
         HashSet<Role> roles = new HashSet();
 
         if (ADMIN != null) {
@@ -92,13 +95,20 @@ public class AdminController {
         user.setRoles(roles);
 
         userService.update(id, user);
+
         return "redirect:/admin";
     }
 
-    @DeleteMapping("/{id}")
+    @RequestMapping(path = "/{id}/delete", method = RequestMethod.POST)
     public String delete(@PathVariable("id") Long id) {
         userService.delete(id);
         return "redirect:/admin";
+    }
+
+    @RequestMapping("/user")
+    public String ShowUser(Model model, Principal principal) {
+        model.addAttribute("user", userService.show(userService.findByEmail(principal.getName()).getId()));
+        return "show-current-user-for-admin";
     }
 
 }

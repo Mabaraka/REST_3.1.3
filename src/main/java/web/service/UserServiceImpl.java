@@ -16,7 +16,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;
-
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -50,7 +49,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void update(Long id, User user) {
         User updateUser = userDao.findById(id).get();
-        updateUser.setPass(passwordEncoder.encode(user.getPass()));
+        if (!(user.getPass().equals(""))) {
+            updateUser.setPass(passwordEncoder.encode(user.getPass()));
+        }
         updateUser.setAge(user.getAge());
         updateUser.setName(user.getName());
         updateUser.setRoles(user.getRoles());
@@ -65,16 +66,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User findByEmail(String email) {
-       return userDao.findByEmail(email).get();
+        return userDao.findByEmail(email).get();
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = findByEmail(email);
-        if (user == null){
+        if (user == null) {
             throw new UsernameNotFoundException(String.format("User '%s' not found", email));
         }
         return user;
