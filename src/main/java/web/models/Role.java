@@ -13,23 +13,29 @@ public class Role implements GrantedAuthority {
     @Id
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column
+    private String roleName;
 
+    @Transient
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role() {
     }
 
-    public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public Role(String roleName) {
+        if (roleName.contains("ADMIN")) {
+            this.id = 1L;
+        } else if (roleName.contains("USER")) {
+            this.id = 2L;
+        }
+        this.roleName = roleName;
     }
+
 
     @Override
     public String getAuthority() {
-        return getName();
+        return roleName;
     }
 
     public Long getId() {
@@ -40,24 +46,28 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public Set<User> getUserSet() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUserSet(Set<User> userSet) {
-        this.users = userSet;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override
     public String toString() {
-        return name;
+        return "Role{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", users=" + users +
+                '}';
     }
 }

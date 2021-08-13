@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,23 +13,19 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
     private String name;
 
-    @Column(name = "lastname")
     private String lastName;
 
-    @Column(name = "email")
+    private int age;
+
     private String email;
 
-    @Column(name = "password")
-    private String pass;
+    private String password;
 
-    @Column(name = "age")
-    private int age;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles"
@@ -39,12 +36,28 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String lastName, String email, String pass, int age) {
+    public User(String name, String lastName, String email, String password, int age) {
         this.name = name;
         this.lastName = lastName;
-        this.email = email;
-        this.pass = pass;
         this.age = age;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String name, String lastName, String password, String email,
+                int age, Set<Role> roles) {
+        this(name, lastName, password, email, age);
+        this.roles = roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = new HashSet<>();
+        if (roles.contains("ADMIN")) {
+            this.roles.add(new Role("ADMIN"));
+        }
+        if (roles.contains("USER")) {
+            this.roles.add(new Role("USER"));
+        }
     }
 
     @Override
@@ -54,7 +67,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return getPass();
+        return password;
     }
 
     @Override
@@ -98,32 +111,20 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getEmail() {
@@ -134,8 +135,16 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -143,8 +152,10 @@ public class User implements UserDetails {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", pass='" + pass + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';
     }

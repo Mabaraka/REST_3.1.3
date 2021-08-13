@@ -23,8 +23,8 @@ public class DataInitializer {
 
     @PostConstruct
     public void Init() {
-        Role roleAdmin = new Role(1L,"ROLE_ADMIN");
-        Role roleUser = new Role(2L,"ROLE_USER");
+        Role roleAdmin = new Role("ROLE_ADMIN");
+        Role roleUser = new Role("ROLE_USER");
 
         Set<Role> allRoles = new HashSet<>();
         allRoles.add(roleAdmin);

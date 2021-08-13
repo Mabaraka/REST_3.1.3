@@ -5,6 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.dao.RoleDao;
 import web.models.Role;
+import web.models.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -26,5 +30,12 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public Role getRoleById(Long id) {
         return roleDao.findById(id).get();
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        List<Role> list = new ArrayList<>();
+        roleDao.findAll().forEach(list::add);
+        return list;
     }
 }
